@@ -1,0 +1,21 @@
+﻿<Window x:Class="Baddel.Views.OsdWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        WindowStyle="None" AllowsTransparency="True" Background="Transparent"
+        ShowInTaskbar="False" Topmost="True" ShowActivated="False" Focusable="False"
+        ResizeMode="NoResize" SizeToContent="WidthAndHeight" IsHitTestVisible="False"
+        FontFamily="Segoe UI Variable Text, Segoe UI" FontSize="14" Opacity="0">
+    <Border Margin="14" Padding="10,9,18,9" CornerRadius="10" Background="#F21C222D" BorderBrush="#33FFFFFF" BorderThickness="1">
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="18" ShadowDepth="3" Opacity="0.35" Color="Black" />
+        </Border.Effect>
+        <StackPanel Orientation="Horizontal">
+            <Border x:Name="Badge" Width="28" Height="28" CornerRadius="6" Background="#E9A23B" BorderBrush="#B87A1E" BorderThickness="0,0,0,3">
+                <TextBlock x:Name="BadgeText" Text="ب" Foreground="#1E2532" FontWeight="Bold" FontSize="15"
+                           HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-3,0,0" />
+            </Border>
+            <TextBlock x:Name="MessageText" Foreground="White" VerticalAlignment="Center" Margin="12,0,0,0"
+                       MaxWidth="460" TextWrapping="Wrap" />
+        </StackPanel>
+    </Border>
+</Window>

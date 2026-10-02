@@ -1,0 +1,7 @@
+Baddel (بدّل)
+Copyright (c) 2026 Prof. Hani Muhsen. All rights reserved.
+
+This source code and the application built from it are proprietary.
+No part may be copied, modified, distributed or sold without written permission
+from the copyright holder. Third-party components keep their own licences;
+see THIRD-PARTY-NOTICES.txt.

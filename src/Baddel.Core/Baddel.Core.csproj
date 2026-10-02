@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>Baddel.Core</RootNamespace>
+    <AssemblyName>Baddel.Core</AssemblyName>
+    <Version>1.0.0</Version>
+    <Company>Hani Muhsen</Company>
+    <Copyright>© 2026 Prof. Hani Muhsen</Copyright>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Baddel.Core.Tests" />
+  </ItemGroup>
+
+</Project>

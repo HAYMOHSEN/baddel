@@ -1,0 +1,251 @@
+﻿<Window x:Class="Baddel.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:Baddel.Controls"
+        Title="{DynamicResource App.WindowTitle}"
+        Width="820" Height="720" MinWidth="600" MinHeight="560"
+        WindowStartupLocation="CenterScreen"
+        FontFamily="Segoe UI Variable Text, Segoe UI" FontSize="14"
+        Icon="pack://application:,,,/Assets/Baddel.ico"
+        UseLayoutRounding="True">
+    <Grid Margin="28,20,28,20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Header: the brand on one side, the live shortcut drawn as keycaps on the other -->
+        <Grid Grid.Row="0" Margin="0,0,0,16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Image Source="pack://application:,,,/Assets/Logo.png" Width="48" Height="48"
+                   RenderOptions.BitmapScalingMode="HighQuality" VerticalAlignment="Center" />
+            <StackPanel Grid.Column="1" Margin="14,0" VerticalAlignment="Center">
+                <TextBlock Text="{DynamicResource App.Name}" FontSize="24" FontWeight="SemiBold" />
+                <TextBlock Text="{DynamicResource App.Tagline}" Style="{StaticResource Baddel.Hint}" FontSize="13.5" />
+            </StackPanel>
+            <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                <ItemsControl x:Name="ShortcutKeys" FlowDirection="LeftToRight" HorizontalAlignment="Center" Focusable="False">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Style="{StaticResource Baddel.Keycap}">
+                                <TextBlock Text="{Binding}" Style="{StaticResource Baddel.KeycapText}" />
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,8,0,0">
+                    <Ellipse x:Name="StatusDot" Width="8" Height="8" VerticalAlignment="Center" Fill="{DynamicResource Baddel.Success}" />
+                    <TextBlock x:Name="StatusText" Style="{StaticResource Baddel.Hint}" Margin="7,0,0,0" VerticalAlignment="Center" />
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+
+        <!-- Shown only when the shortcut could not be registered -->
+        <Border x:Name="ShortcutBanner" Grid.Row="1" Visibility="Collapsed" Margin="0,0,0,14" Padding="16,12" CornerRadius="8"
+                Background="{DynamicResource Baddel.WarningBackground}">
+            <DockPanel>
+                <Button DockPanel.Dock="Right" Content="{DynamicResource Banner.ChangeShortcut}" Padding="14,5"
+                        VerticalAlignment="Center" Click="OnOpenShortcutSettings" />
+                <TextBlock Text="{DynamicResource Banner.ShortcutUnavailable}" TextWrapping="Wrap" VerticalAlignment="Center" Margin="0,0,12,0" />
+            </DockPanel>
+        </Border>
+
+        <TabControl x:Name="Tabs" Grid.Row="2" Background="Transparent" BorderThickness="0" Padding="0">
+
+            <!-- Converter -->
+            <TabItem x:Name="ConverterTab" Header="{DynamicResource Tab.Convert}">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="0,14,6,0">
+                    <StackPanel>
+                        <Border x:Name="WelcomeCard" Style="{StaticResource Baddel.Card}" Visibility="Collapsed"
+                                BorderBrush="{DynamicResource Baddel.Saffron}" BorderThickness="1.5">
+                            <StackPanel>
+                                <TextBlock Text="{DynamicResource Welcome.Title}" Style="{StaticResource Baddel.SectionTitle}" FontSize="18" />
+                                <TextBlock Text="{DynamicResource Welcome.Body}" TextWrapping="Wrap" LineHeight="22" Margin="0,2,0,14" />
+                                <TextBlock x:Name="WelcomeTryText" Style="{StaticResource Baddel.Hint}" FontSize="13" />
+                                <TextBox x:Name="TryBox" Text="hgsghl ugd;l" FlowDirection="LeftToRight" FontSize="17" Margin="0,8,0,6" Padding="10,7" />
+                                <TextBlock Text="{DynamicResource Welcome.NoSelectionTip}" Style="{StaticResource Baddel.Hint}" Margin="0,2,0,14" />
+                                <DockPanel>
+                                    <Button DockPanel.Dock="Right" Content="{DynamicResource Welcome.Done}" Padding="18,7"
+                                            Style="{DynamicResource AccentButtonStyle}" Click="OnWelcomeDone" />
+                                    <CheckBox x:Name="WelcomeStartupCheck" IsChecked="True" VerticalAlignment="Center">
+                                        <TextBlock Text="{DynamicResource Welcome.StartWithWindows}" TextWrapping="Wrap" />
+                                    </CheckBox>
+                                </DockPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource Baddel.Card}">
+                            <StackPanel>
+                                <DockPanel Margin="0,0,0,8">
+                                    <ComboBox x:Name="DirectionCombo" DockPanel.Dock="Right" MinWidth="170" SelectedIndex="0">
+                                        <ComboBoxItem Content="{DynamicResource Direction.Auto}" Tag="Auto" />
+                                        <ComboBoxItem Content="{DynamicResource Direction.ToArabic}" Tag="ToArabic" />
+                                        <ComboBoxItem Content="{DynamicResource Direction.ToLatin}" Tag="ToLatin" />
+                                    </ComboBox>
+                                    <TextBlock Text="{DynamicResource Convert.Input}" Style="{StaticResource Baddel.SectionTitle}" VerticalAlignment="Center" />
+                                </DockPanel>
+                                <Grid>
+                                    <TextBox x:Name="InputBox" AcceptsReturn="True" TextWrapping="Wrap" MinHeight="110" MaxHeight="220"
+                                             VerticalScrollBarVisibility="Auto" FontSize="16" Padding="10,8" />
+                                    <TextBlock x:Name="InputHint" Text="{DynamicResource Convert.InputHint}" Style="{StaticResource Baddel.Hint}"
+                                               FontSize="14" Margin="14,11" IsHitTestVisible="False" />
+                                </Grid>
+                                <DockPanel Margin="0,16,0,8">
+                                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                                        <Button Content="{DynamicResource Convert.Swap}" Padding="12,5" Margin="0,0,8,0" Click="OnSwap" />
+                                        <Button Content="{DynamicResource Convert.Clear}" Padding="12,5" Margin="0,0,8,0" Click="OnClear" />
+                                        <Button Content="{DynamicResource Convert.Copy}" Padding="14,5" Style="{DynamicResource AccentButtonStyle}" Click="OnCopy" />
+                                    </StackPanel>
+                                    <TextBlock Text="{DynamicResource Convert.Output}" Style="{StaticResource Baddel.SectionTitle}" VerticalAlignment="Center" />
+                                </DockPanel>
+                                <TextBox x:Name="OutputBox" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" MinHeight="110" MaxHeight="220"
+                                         VerticalScrollBarVisibility="Auto" FontSize="16" Padding="10,8" />
+                                <TextBlock x:Name="CopyStatus" Style="{StaticResource Baddel.Hint}" Margin="0,8,0,0" Visibility="Collapsed" />
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- Settings -->
+            <TabItem x:Name="SettingsTab" Header="{DynamicResource Tab.Settings}">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="0,14,6,0">
+                    <StackPanel>
+                        <Border Style="{StaticResource Baddel.Card}">
+                            <StackPanel>
+                                <TextBlock Text="{DynamicResource Settings.Shortcut.Title}" Style="{StaticResource Baddel.SectionTitle}" />
+                                <TextBlock Text="{DynamicResource Settings.Shortcut.Desc}" Style="{StaticResource Baddel.Hint}" Margin="0,0,0,10" />
+                                <DockPanel>
+                                    <Button DockPanel.Dock="Right" Content="{DynamicResource Settings.Shortcut.Reset}" Padding="14,6" Margin="10,0,0,0"
+                                            Click="OnResetShortcut" />
+                                    <controls:HotkeyBox x:Name="ShortcutBox" FontSize="15" Padding="8,7" />
+                                </DockPanel>
+                                <TextBlock x:Name="ShortcutStatus" Style="{StaticResource Baddel.Hint}" Margin="0,8,0,0" Visibility="Collapsed" />
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource Baddel.Card}">
+                            <StackPanel>
+                                <TextBlock Text="{DynamicResource Settings.Behavior.Title}" Style="{StaticResource Baddel.SectionTitle}" Margin="0,0,0,8" />
+                                <CheckBox x:Name="SelectLineCheck" Margin="0,4" Click="OnBehaviorChanged">
+                                    <TextBlock Text="{DynamicResource Settings.SelectLine}" TextWrapping="Wrap" />
+                                </CheckBox>
+                                <CheckBox x:Name="SwitchLayoutCheck" Margin="0,4" Click="OnBehaviorChanged">
+                                    <TextBlock Text="{DynamicResource Settings.SwitchLayout}" TextWrapping="Wrap" />
+                                </CheckBox>
+                                <CheckBox x:Name="RestoreClipboardCheck" Margin="0,4" Click="OnBehaviorChanged">
+                                    <TextBlock Text="{DynamicResource Settings.RestoreClipboard}" TextWrapping="Wrap" />
+                                </CheckBox>
+                                <CheckBox x:Name="NotificationsCheck" Margin="0,4" Click="OnBehaviorChanged">
+                                    <TextBlock Text="{DynamicResource Settings.ShowNotifications}" TextWrapping="Wrap" />
+                                </CheckBox>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource Baddel.Card}">
+                            <StackPanel>
+                                <TextBlock Text="{DynamicResource Settings.General.Title}" Style="{StaticResource Baddel.SectionTitle}" Margin="0,0,0,8" />
+                                <CheckBox x:Name="StartupCheck" Margin="0,4" Click="OnStartupClicked">
+                                    <TextBlock Text="{DynamicResource Settings.StartWithWindows}" TextWrapping="Wrap" />
+                                </CheckBox>
+                                <TextBlock x:Name="StartupNote" Style="{StaticResource Baddel.Hint}" Margin="28,2,0,6" Visibility="Collapsed" />
+                                <Grid Margin="0,12,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="16" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <TextBlock Text="{DynamicResource Settings.Language}" Margin="0,0,0,6" />
+                                        <ComboBox x:Name="LanguageCombo" SelectionChanged="OnLanguageChanged">
+                                            <ComboBoxItem Content="العربية" Tag="ar" />
+                                            <ComboBoxItem Content="English" Tag="en" />
+                                        </ComboBox>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Text="{DynamicResource Settings.Theme}" Margin="0,0,0,6" />
+                                        <ComboBox x:Name="ThemeCombo" SelectionChanged="OnThemeChanged">
+                                            <ComboBoxItem Content="{DynamicResource Theme.System}" Tag="System" />
+                                            <ComboBoxItem Content="{DynamicResource Theme.Light}" Tag="Light" />
+                                            <ComboBoxItem Content="{DynamicResource Theme.Dark}" Tag="Dark" />
+                                        </ComboBox>
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource Baddel.Card}">
+                            <StackPanel>
+                                <TextBlock Text="{DynamicResource Settings.Layouts.Title}" Style="{StaticResource Baddel.SectionTitle}" />
+                                <TextBlock Text="{DynamicResource Settings.Layouts.Desc}" Style="{StaticResource Baddel.Hint}" Margin="0,0,0,10" />
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="16" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <TextBlock Text="{DynamicResource Settings.Layouts.Arabic}" Margin="0,0,0,6" />
+                                        <ComboBox x:Name="ArabicLayoutCombo" SelectionChanged="OnLayoutChoiceChanged" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Text="{DynamicResource Settings.Layouts.Latin}" Margin="0,0,0,6" />
+                                        <ComboBox x:Name="LatinLayoutCombo" SelectionChanged="OnLayoutChoiceChanged" />
+                                    </StackPanel>
+                                </Grid>
+                                <TextBlock x:Name="LayoutNote" Style="{StaticResource Baddel.Hint}" Margin="0,10,0,0" Visibility="Collapsed" />
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- About -->
+            <TabItem x:Name="AboutTab" Header="{DynamicResource Tab.About}">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="0,14,6,0">
+                    <StackPanel>
+                        <Border Style="{StaticResource Baddel.Card}">
+                            <DockPanel>
+                                <Image DockPanel.Dock="Left" Source="pack://application:,,,/Assets/Logo.png" Width="72" Height="72"
+                                       RenderOptions.BitmapScalingMode="HighQuality" />
+                                <StackPanel Margin="18,0,0,0" VerticalAlignment="Center">
+                                    <TextBlock Text="{DynamicResource App.FullName}" FontSize="20" FontWeight="SemiBold" TextWrapping="Wrap" />
+                                    <TextBlock x:Name="VersionText" Style="{StaticResource Baddel.Hint}" Margin="0,4,0,0" />
+                                    <TextBlock x:Name="DeveloperText" Style="{StaticResource Baddel.Hint}" />
+                                </StackPanel>
+                            </DockPanel>
+                        </Border>
+                        <Border Style="{StaticResource Baddel.Card}">
+                            <StackPanel>
+                                <TextBlock Text="{DynamicResource About.Help.Title}" Style="{StaticResource Baddel.SectionTitle}" />
+                                <TextBlock Text="{DynamicResource About.Help.Body}" TextWrapping="Wrap" LineHeight="22" />
+                            </StackPanel>
+                        </Border>
+                        <Border Style="{StaticResource Baddel.Card}">
+                            <StackPanel>
+                                <TextBlock Text="{DynamicResource About.Privacy.Title}" Style="{StaticResource Baddel.SectionTitle}" />
+                                <TextBlock Text="{DynamicResource About.Privacy.Body}" TextWrapping="Wrap" LineHeight="22" Margin="0,0,0,12" />
+                                <WrapPanel>
+                                    <Button Content="{DynamicResource About.Rate}" Padding="14,6" Margin="0,0,8,8" Style="{DynamicResource AccentButtonStyle}" Click="OnRate" />
+                                    <Button Content="{DynamicResource About.Support}" Padding="14,6" Margin="0,0,8,8" Click="OnContactSupport" />
+                                    <Button Content="{DynamicResource About.PrivacyLink}" Padding="14,6" Margin="0,0,8,8" Click="OnOpenPrivacy" />
+                                    <Button Content="{DynamicResource About.Notices}" Padding="14,6" Margin="0,0,8,8" Click="OnOpenNotices" />
+                                </WrapPanel>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>
